@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/Isophilly_site/static/css/main.a2113e18.css",
-    "main.js": "/Isophilly_site/static/js/main.674e6980.js",
+    "main.js": "/Isophilly_site/static/js/main.75aea443.js",
     "static/js/453.018fd5ab.chunk.js": "/Isophilly_site/static/js/453.018fd5ab.chunk.js",
     "static/media/img_2_philly.jpg": "/Isophilly_site/static/media/img_2_philly.e228086cf2889226beb3.jpg",
     "static/media/img_1_philly.jpg": "/Isophilly_site/static/media/img_1_philly.d1ef1ffd14d6736dae48.jpg",
     "index.html": "/Isophilly_site/index.html",
     "main.a2113e18.css.map": "/Isophilly_site/static/css/main.a2113e18.css.map",
-    "main.674e6980.js.map": "/Isophilly_site/static/js/main.674e6980.js.map",
+    "main.75aea443.js.map": "/Isophilly_site/static/js/main.75aea443.js.map",
     "453.018fd5ab.chunk.js.map": "/Isophilly_site/static/js/453.018fd5ab.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a2113e18.css",
-    "static/js/main.674e6980.js"
+    "static/js/main.75aea443.js"
   ]
 }
