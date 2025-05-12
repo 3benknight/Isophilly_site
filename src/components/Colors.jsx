@@ -66,7 +66,16 @@ export function getColor(feat, reg, dist, mode, selectedCenter) {
   if (!mm || mm.max === mm.min) 
     return '#a1a6ab';
 
-  const ratio = (val - mm.min) / (mm.max - mm.min);
+  let ratio;
+  if(feat === "avg_housing_price") {
+    const v    = Math.log(val);
+    const vMin = Math.log(mm.min);
+    const vMax = Math.log(mm.max);
+    const raw  = (v - vMin) / (vMax - vMin);
+    ratio = Math.max(0, Math.min(1, raw));
+  }
+  else
+   ratio = (val - mm.min) / (mm.max - mm.min);
   return ratioToColor(ratio);
 }
 
@@ -81,5 +90,5 @@ export function getFeatureValue(feat, center, dist, mode) {
     return row[feat];
 
   const num = parseFloat(row[feat]);
-  return Number.isNaN(num) ? "None" : num.toFixed(4).toString();
+  return Number.isNaN(num) ? "None" : (feat === "foreclosure_over_area") ? num.toFixed(8).toString(): num.toFixed(4).toString();
 }
