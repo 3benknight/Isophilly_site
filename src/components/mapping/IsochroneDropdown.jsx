@@ -1,6 +1,6 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { filterIsochrones, hasIsochrone } from '../Math';
+import { hasIsochrone } from '../Math';
 
 const IsochroneDropdown = ({setIso, selected, showIsochrone, setShowIsochrone, time, getTime, mode, getMode}) => {
     const handleCheckbox = e => setShowIsochrone(e.target.checked);

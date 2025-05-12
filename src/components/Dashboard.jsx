@@ -12,12 +12,12 @@ import { loadIsochroneStats } from './Colors';
 
 function Dashboard({selectedRegion, setCensusRegion, isochrone, setIsochroneOverlay, distance, setDistance, tranMode, setTranMode, feat, setFeat}) {
   const [showIso, setShowIso] = useState(false);
-
+  const [selectedValue, setSelectedValue] = useState("None");
   useEffect(() => {
     loadIsochroneStats().catch(console.error);
   }, []);
 
-  let isochroneDropdown = (selectedRegion !== "none") ? <Col className="left-col d-flex justify-content-center"><IsochroneDropdown setIso={setIsochroneOverlay} selected={selectedRegion} showIsochrone={showIso} time={distance} getTime={setDistance} mode={tranMode} getMode={setTranMode} setShowIsochrone={setShowIso}className="isochrone_dropdown"/></Col> : <>Select a region to display options</>
+  let isochroneDropdown = (selectedRegion !== "none") ? <Col className="left-col d-flex justify-content-center"><IsochroneDropdown setIso={setIsochroneOverlay} selected={selectedRegion} showIsochrone={showIso} time={distance} getTime={setDistance} mode={tranMode} getMode={setTranMode} setShowIsochrone={setShowIso}className="isochrone_dropdown"/></Col> : <Col className="d-flex justify-content-center"><span>Select a region to display options</span></Col>
   let featureDropdown = <Col className="left-col d-flex justify-content-center"><FeatureDropdown feat={feat} setFeat={setFeat} className="isochrone_dropdown"/></Col>
   return (
     <div className="dashboard-background">
@@ -31,16 +31,17 @@ function Dashboard({selectedRegion, setCensusRegion, isochrone, setIsochroneOver
         <Row title="Change isochrone parameters" className="dashboard-selection">
           {isochroneDropdown}
         </Row>
-        <Row title="Change isochrone parameters" className="dashboard-selection-big">
-          <Row>
-            <strong>Features Menu</strong>
-          </Row>
-          <Row>
-            Note: While the map is covered by census blocks, the color represents the value of the seleted isochrone for each census group.
-          </Row>
-          <Row>
+        <Row title="Change isochrone parameters" className="dashboard-selection-big d-flex flex-column justify-content-center align-items-center">
+          <div className="dashboard-header">Features Menu</div>
+          <div>
+            Note: While the map is covered by census blocks, the color represents the value of the selected isochrone for each census group.
+          </div>
+          <div className="d-flex justify-content-center w-100">
             {featureDropdown}
-          </Row>
+          </div>
+          <div className="d-flex justify-content-center w-100">
+            Selected Value: {selectedValue}
+          </div>
         </Row>
         <Row className="dashboard-map-wrapper">
           <LeafletDashboard
@@ -52,6 +53,7 @@ function Dashboard({selectedRegion, setCensusRegion, isochrone, setIsochroneOver
             time={distance}
             mode={tranMode}
             feat={feat}
+            setSel={setSelectedValue}
           />
         </Row>
       </Container>
@@ -59,12 +61,6 @@ function Dashboard({selectedRegion, setCensusRegion, isochrone, setIsochroneOver
   );
 }
 
-/**
- * Maps the state from the Redux store to the component props.
- * 
- * @param {object} state - The current state.
- * @returns {object} The mapped props.
- */
 function mapStateToProps(state) {
   return {
     selectedRegion: state.censusRegion,
@@ -75,12 +71,6 @@ function mapStateToProps(state) {
   };
 }
 
-/**
- * Maps the dispatch functions to the component props.
- * 
- * @param {Function} dispatch - The dispatch function.
- * @returns {object} The mapped props.
- */
 function mapDispatchToProps(dispatch) {
   return {
     setCensusRegion: (region) => dispatch(setCensusRegion(region)),

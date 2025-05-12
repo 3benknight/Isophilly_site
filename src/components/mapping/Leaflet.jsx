@@ -2,9 +2,9 @@ import censusBlocks from "../../assets/data/census_blocks.json";
 import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { findIsochrone } from "../Math";
-import { getColor } from "../Colors";
+import { getColor, getFeatureValue } from "../Colors";
 
-const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, show, time, mode, feat }) => {
+const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, show, time, mode, feat, setSel }) => {
   const [map, setMap] = useState(null);
   const geoJsonLayer = useRef(null);
   const isoLayer    = useRef(null);
@@ -26,11 +26,13 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
   }
 
   function highlightFeature(e) {
+    setSel(getFeatureValue(feat, e.target.feature.id, time, mode));
     e.target.setStyle({ weight: 5, color: '#666', dashArray: '', fillOpacity: 0.7 });
     e.target.bringToFront();
   }
 
   function resetHighlight(e) {
+    setSel("None");
     geoJsonLayer.current.resetStyle(e.target);
   }
 
@@ -39,7 +41,6 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
     setCensusBlock(e.target.feature.id);
   }
 
-  // 1) Initialize map once
   useEffect(() => {
     if (map) return;
     const m = L.map(mapId, {
@@ -52,7 +53,6 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
     setMap(m);
   }, [map, mapId]);
 
-  // 2) (Re-)build the censusBlocks layer whenever map or selectedCensusBlock changes
   useEffect(() => {
     if (!map) return;
 
@@ -72,20 +72,16 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
     }).addTo(map);
   }, [map, selectedCensusBlock, feat, time, mode]);
 
-  // 3) (Re-)draw the selected isochrone (on top) whenever map or isoSel changes
   useEffect(() => {
     if (!map) return;
   
-    // tear down any existing layer
     if (isoLayer.current) {
       isoLayer.current.remove();
       isoLayer.current = null;
     }
-  
-    // if we’re not supposed to show, bail early
+
     if (!show) return;
-  
-    // async loader
+
     const loadIso = async () => {
       try {
         const iso = await findIsochrone(selectedCensusBlock, time, mode);
@@ -110,7 +106,6 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
   
     loadIso();
     
-    // optional cleanup if findIsochrone can outlive the component:
     return () => {
       if (isoLayer.current) {
         isoLayer.current.remove();
