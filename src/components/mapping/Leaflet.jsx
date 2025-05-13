@@ -75,44 +75,50 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
 
   useEffect(() => {
     if (!map) return;
-  
+
+    let cancelled = false;
+
     if (isoLayer.current) {
       isoLayer.current.remove();
       isoLayer.current = null;
     }
 
-    if (!show) return;
-
-    const loadIso = async () => {
-      try {
-        const iso = await findIsochrone(selectedCensusBlock, time, mode);
-        if (iso) {
-          isoLayer.current = L.geoJSON(iso, {
-            style: {
-              color: '#ff7800',
-              weight: 4,
-              opacity: 0.9,
-              fillOpacity: 0.2
-            }
-          })
-          .addTo(map)
-          .bringToFront();
-        } else {
-          console.warn("Isochrone not found for", selectedCensusBlock, time);
-        }
-      } catch (err) {
-        console.error("Error loading isochrone:", err);
-      }
-    };
-  
-    loadIso();
-    
+  if (!show) {
     return () => {
-      if (isoLayer.current) {
-        isoLayer.current.remove();
-        isoLayer.current = null;
-      }
+      cancelled = true;
     };
+  }
+
+  (async () => {
+    try {
+      const iso = await findIsochrone(selectedCensusBlock, time, mode);
+      if (cancelled || !show) return;
+      if (iso) {
+        isoLayer.current = L.geoJSON(iso, {
+          style: {
+            color: '#ff7800',
+            weight: 4,
+            opacity: 0.9,
+            fillOpacity: 0.2
+          }
+        })
+        .addTo(map)
+        .bringToFront();
+      } else {
+        console.warn("Isochrone not found for", selectedCensusBlock, time);
+      }
+    } catch (err) {
+      if (!cancelled) console.error("Error loading isochrone:", err);
+    }
+  })();
+
+  return () => {
+    cancelled = true;
+    if (isoLayer.current) {
+      isoLayer.current.remove();
+      isoLayer.current = null;
+    }
+  };
   }, [map, selectedCensusBlock, show, time, mode]);  
 
   return (
