@@ -7,6 +7,7 @@ const initialState = {
   selectedMode: "pt",
   selectedDist: 600,
   selectedFeature: "none",
+  selectedSpatial: "Isochrone",
 };
 
 /**
@@ -30,6 +31,8 @@ function reducer(state = initialState, action) {
       return { ...state, selectedDist: action.payload};
     case 'selectedFeature':
       return { ...state, selectedFeature: action.payload};
+    case 'selectedSpatial':
+      return { ...state, selectedSpatial: action.payload};
     default:
       return state;
   }
@@ -93,6 +96,16 @@ export function setDist(dist) {
  */
 export function setFeature(feature) {
   return { type: 'selectedFeature', payload: feature };
+}
+
+/**
+ * Changes displays from census blocks to isochrones.
+ * 
+ * @param {string} serial - The chosen spatial type.
+ * @returns {object} The action.
+ */
+export function setSpatial(serial) {
+  return { type: 'selectedSpatial', payload: serial };
 }
 // Create the Redux store
 const store = createStore(reducer);

@@ -4,7 +4,7 @@ import L from 'leaflet';
 import { findIsochrone } from "../Math";
 import { getColor, getFeatureValue } from "../Colors";
 
-const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, show, time, mode, feat, setSel }) => {
+const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, show, time, mode, feat, setSel, dataLoaded, spatial }) => {
   const [map, setMap] = useState(null);
   const geoJsonLayer = useRef(null);
   const isoLayer    = useRef(null);
@@ -17,7 +17,7 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
 
   function style(feature) {
     return {
-      fillColor: getColor(feat, feature, time, mode, selectedCensusBlock),
+      fillColor: getColor(feat, feature, time, mode, selectedCensusBlock, spatial),
       weight: 2,
       color: 'white',
       dashArray: '3',
@@ -26,7 +26,7 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
   }
 
   function highlightFeature(e) {
-    setSel(getFeatureValue(feat, e.target.feature.id, time, mode));
+    setSel(getFeatureValue(feat, e.target.feature.id, time, mode, spatial));
     e.target.setStyle({ weight: 5, color: '#666', dashArray: '', fillOpacity: 0.7 });
     e.target.bringToFront();
   }
@@ -54,12 +54,13 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
   }, [map, mapId]);
 
   useEffect(() => {
-    if (!map) return;
+    if (!map || !dataLoaded) return;
 
     if (geoJsonLayer.current) {
       geoJsonLayer.current.remove();
     }
 
+    console.log(spatial);
     geoJsonLayer.current = L.geoJSON(censusBlocks, {
       style,
       onEachFeature: (feature, layer) => {
@@ -70,7 +71,7 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
         });
       }
     }).addTo(map);
-  }, [map, selectedCensusBlock, feat, time, mode]);
+  }, [map, selectedCensusBlock, feat, time, mode, spatial, dataLoaded]);
 
   useEffect(() => {
     if (!map) return;

@@ -1,7 +1,7 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
-const FeatureDropdown = ({feat, setFeat}) => {
+const FeatureDropdown = ({feat, setFeat, spatial, setSpatial}) => {
 
     //area_m2,avg_stars,choice,no_truck_length,distance_pool,avg_housing_price,foreclosure_count,foreclosure_over_area
     const selectDistance = <DropdownButton variant="outline-warning" id="dropdown-basic-button" title={"Current Feature: " + feat}>
@@ -16,10 +16,20 @@ const FeatureDropdown = ({feat, setFeat}) => {
         <Dropdown.Item as="button" key = {"feat_9"} active={"foreclosure_over_area" === feat} onClick={() => setFeat("foreclosure_over_area")}>Foreclosures a Percentage of Area</Dropdown.Item>
     </DropdownButton>
 
+    const selectSpatial = <DropdownButton variant="outline-warning" id="dropdown-basic-button" title={"Spatial Area: " + spatial}>
+        <Dropdown.Item as="button" key = {"spa_1"} active={"Isochrone" === spatial} onClick={() => setSpatial("Isochrone")}>Isochrone</Dropdown.Item>
+        <Dropdown.Item as="button" key = {"spa_2"} active={"Census Block" === spatial} onClick={() => setSpatial("Census Block")}>Census Block</Dropdown.Item>
+    </DropdownButton>
+
     return ( 
+        <>
         <div className="iso-dropdown-container">
             {selectDistance}
         </div>
+        <div className="iso-dropdown-container">
+            {selectSpatial}
+        </div>
+    </>
     );
 }
 

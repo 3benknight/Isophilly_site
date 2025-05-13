@@ -1,4 +1,3 @@
-// src/context/DataProvider.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Papa from 'papaparse';
 
@@ -35,7 +34,7 @@ export const DataProvider = ({ children }) => {
         console.error('Error fetching CSV data:', error);
         setLoading(false);
       });
-  }, []); // empty dependency array ensures this runs only once
+  }, []);
 
   return (
     <DataContext.Provider value={{ totalCO2Data, campusData, loading }}>
