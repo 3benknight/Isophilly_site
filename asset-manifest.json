@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/Isophilly_site/static/css/main.68405126.css",
-    "main.js": "/Isophilly_site/static/js/main.a611e7b8.js",
+    "main.css": "/Isophilly_site/static/css/main.3b7d8a7d.css",
+    "main.js": "/Isophilly_site/static/js/main.3da93412.js",
     "static/js/453.018fd5ab.chunk.js": "/Isophilly_site/static/js/453.018fd5ab.chunk.js",
     "static/media/img_2_philly.jpg": "/Isophilly_site/static/media/img_2_philly.e228086cf2889226beb3.jpg",
     "static/media/img_1_philly.jpg": "/Isophilly_site/static/media/img_1_philly.d1ef1ffd14d6736dae48.jpg",
     "index.html": "/Isophilly_site/index.html",
-    "main.68405126.css.map": "/Isophilly_site/static/css/main.68405126.css.map",
-    "main.a611e7b8.js.map": "/Isophilly_site/static/js/main.a611e7b8.js.map",
+    "main.3b7d8a7d.css.map": "/Isophilly_site/static/css/main.3b7d8a7d.css.map",
+    "main.3da93412.js.map": "/Isophilly_site/static/js/main.3da93412.js.map",
     "453.018fd5ab.chunk.js.map": "/Isophilly_site/static/js/453.018fd5ab.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.68405126.css",
-    "static/js/main.a611e7b8.js"
+    "static/css/main.3b7d8a7d.css",
+    "static/js/main.3da93412.js"
   ]
 }
