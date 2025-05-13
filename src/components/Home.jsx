@@ -19,7 +19,7 @@ function Home() {
           <h1>IsoPhilly</h1>
           <div className="small-bar" />
           <p>
-            Analyzing Philadelphia’s Socioeconomic and Real‐Estate Indicators on an
+            Predicting Philadelphia Real-Estate Values through Aggregating Indicators on an
             Isochrome Level
           </p>
           <Button
@@ -38,12 +38,12 @@ function Home() {
       >
         <div className="overlay">
           <p>
-            While other tools calculate public transport and other economic factors
-            of a city based on distance, IsoPhilly uses isochromes, regions that
+            While other tools calculate real estate value with aggregators on a 
+            rigid census block scale, IsoPhilly uses isochromes, regions that
             mark how far a person can travel in a specified amount of time. This
             allows IsoPhilly to get a much more accurate representation of
-            accessibility of features when compared to a traditional distance‐based
-            approach.
+            accessibility of features when compared to a traditional fixed region
+            based approach.
           </p>
         </div>
       </section>

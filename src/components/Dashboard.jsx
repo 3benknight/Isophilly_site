@@ -34,7 +34,7 @@ function Dashboard({selectedRegion, setCensusRegion, setIsochroneOverlay, distan
         <Row title="Change isochrone parameters" className="dashboard-selection">
           {isochroneDropdown}
         </Row>
-        <Row title="Change isochrone parameters" className="dashboard-selection-big d-flex flex-column justify-content-center align-items-center">
+        <Row title="Change map features" className="dashboard-selection-big d-flex flex-column justify-content-center align-items-center">
           <div className="dashboard-header">Features Menu</div>
           <div>
             Note: While the map is covered by census blocks, the color represents the value of the selected isochrone for each census group.
@@ -61,7 +61,7 @@ function Dashboard({selectedRegion, setCensusRegion, setIsochroneOverlay, distan
             spatial={spatial}
           />
         </Row>
-        <Row title="Change isochrone parameters" className="dashboard-selection-reg">
+        <Row title="View regression results" className="dashboard-selection-reg">
         <div className="dashboard-header">Regressions</div>
           <div className="d-flex justify-content-center w-100 h-20">
             This table includes the baseline Census Block regression and the regressions of each isochrone. The largest absolute value in each column is highlighted. The best fit was with an 20min car isochrone.
