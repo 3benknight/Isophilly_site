@@ -7,7 +7,7 @@ import { getColor, getFeatureValue } from "../Colors";
 const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, show, time, mode, feat, setSel, dataLoaded, spatial }) => {
   const [map, setMap] = useState(null);
   const geoJsonLayer = useRef(null);
-  const isoLayer    = useRef(null);
+  const isoLayers    = useRef([])
   const tileLayer   = useRef(
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -75,50 +75,49 @@ const LeafletDashboard = ({ mapId, selectedCensusBlock, setCensusBlock, setIso, 
 
   useEffect(() => {
     if (!map) return;
-
-    let cancelled = false;
-
-    if (isoLayer.current) {
-      isoLayer.current.remove();
-      isoLayer.current = null;
+  
+    if (!show) {
+      isoLayers.current.forEach(layer => layer.remove());
+      isoLayers.current = [];
+      return;
     }
+  
+    let cancelled = false;
+  
+    isoLayers.current.forEach(layer => layer.remove());
+    isoLayers.current = [];
+  
+    (async () => {
+      try {
+        const iso = await findIsochrone(selectedCensusBlock, time, mode);
+        if (cancelled) return;
+  
+        if (iso) {
+          const layer = L.geoJSON(iso, {
+            style: {
+              color: '#ff7800',
+              weight: 4,
+              opacity: 0.9,
+              fillOpacity: 0.2
+            }
+          })
+          .addTo(map)
+          .bringToFront();
 
-  if (!show) {
+          isoLayers.current.push(layer);
+        } else {
+          console.warn("Isochrone not found for", selectedCensusBlock, time);
+        }
+      } catch (err) {
+        if (!cancelled) console.error("Error loading isochrone:", err);
+      }
+    })();
+  
     return () => {
       cancelled = true;
+      isoLayers.current.forEach(layer => layer.remove());
+      isoLayers.current = [];
     };
-  }
-
-  (async () => {
-    try {
-      const iso = await findIsochrone(selectedCensusBlock, time, mode);
-      if (cancelled || !show) return;
-      if (iso) {
-        isoLayer.current = L.geoJSON(iso, {
-          style: {
-            color: '#ff7800',
-            weight: 4,
-            opacity: 0.9,
-            fillOpacity: 0.2
-          }
-        })
-        .addTo(map)
-        .bringToFront();
-      } else {
-        console.warn("Isochrone not found for", selectedCensusBlock, time);
-      }
-    } catch (err) {
-      if (!cancelled) console.error("Error loading isochrone:", err);
-    }
-  })();
-
-  return () => {
-    cancelled = true;
-    if (isoLayer.current) {
-      isoLayer.current.remove();
-      isoLayer.current = null;
-    }
-  };
   }, [map, selectedCensusBlock, show, time, mode]);  
 
   return (

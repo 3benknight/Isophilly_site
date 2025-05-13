@@ -15,7 +15,6 @@
 
 .dashboard-selection {
     position: relative;
-    height:7%;
     width:95%;
     text-align: center;
     padding-top: 8px;
@@ -33,7 +32,6 @@
 
 .dashboard-selection-big {
     position: relative;
-    height:20%;
     width:95%;
     text-align: center;
     padding-top: 8px;
@@ -51,7 +49,6 @@
 
 .dashboard-selection-reg {
     position: relative;
-    height:75%;
     width:95%;
     text-align: center;
     padding-top: 8px;
